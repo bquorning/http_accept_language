@@ -15,7 +15,7 @@ workflows:
 rspec: &rspec
   steps:
     - checkout
-    - run: bundle install
+    - run: bundle install --jobs 3
     - run: bundle exec rspec spec
 
 jobs:
