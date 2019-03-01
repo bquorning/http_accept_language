@@ -15,7 +15,17 @@ workflows:
 rspec: &rspec
   steps:
     - checkout
-    - run: bundle install --jobs 3
+    - run: bundle lock
+    - restore_cache:
+          keys:
+            - gem-cache-v1-{{ arch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Gemfile.lock" }}
+            - gem-cache-v1-{{ arch }}-{{ .Environment.CIRCLE_JOB }}
+            - gem-cache-v1
+    - run: bundle install --path vendor/bundle
+    - save_cache:
+        key: gem-cache-v1-{{ arch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
     - run: bundle exec rspec spec
 
 jobs:
