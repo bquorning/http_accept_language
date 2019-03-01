@@ -1,0 +1,45 @@
+version: 2
+
+workflows:
+  version: 2
+
+  spec:
+    jobs:
+      - ruby-2.1
+      - ruby-2.2
+      - ruby-2.3
+      - ruby-2.4
+      - ruby-2.5
+      - ruby-2.6
+
+rspec: &rspec
+  steps:
+    - checkout
+    - run: bundle install
+    - run: bundle exec rspec spec
+
+jobs:
+  ruby-2.1:
+    docker:
+      - image: circleci/ruby:2.1
+    <<: *rspec
+  ruby-2.2:
+    docker:
+      - image: circleci/ruby:2.2
+    <<: *rspec
+  ruby-2.3:
+    docker:
+      - image: circleci/ruby:2.3
+    <<: *rspec
+  ruby-2.4:
+    docker:
+      - image: circleci/ruby:2.4
+    <<: *rspec
+  ruby-2.5:
+    docker:
+      - image: circleci/ruby:2.5
+    <<: *rspec
+  ruby-2.6:
+    docker:
+      - image: circleci/ruby:2.6
+    <<: *rspec
